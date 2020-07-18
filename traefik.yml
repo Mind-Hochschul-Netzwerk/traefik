@@ -1,0 +1,23 @@
+# Docker configuration backend
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    network: traefik
+defaultEntryPoints:
+  - websecure
+  - web
+entryPoints:
+  web:
+    address: ":80"
+#    http:
+#      redirections:
+#        entryPoint:
+#          to: websecure
+#          scheme: https
+  websecure:
+    address: ":443"
+    http:
+      tls: {}
+api:
+  insecure: true        # Dashboard
