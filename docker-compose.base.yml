@@ -1,0 +1,56 @@
+version: "3.5"
+services:
+  dockerproxy:
+   container_name: docker_socket_proxy
+   image: tecnativa/docker-socket-proxy
+   restart: always
+   networks:
+     - docker_sock
+   ports:
+     - 2375
+   volumes:
+     - "/var/run/docker.sock:/var/run/docker.sock"
+   environment:
+     - LOG_LEVEL=info
+     - CONTAINERS=1
+
+  traefik:
+    hostname: traefik
+    image: traefik:2.2
+    container_name: traefik
+    restart: always
+    volumes:
+      - ${VOLUMES_DIR}/acme:/etc/traefik/acme
+      - ${VOLUMES_DIR}/log:/var/log
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - traefik
+      - docker_sock
+    labels:
+      - traefik.enable=${ENABLE_DASHBOARD}
+      # Security Headers:
+      - traefik.http.middlewares.secheader.headers.framedeny=true
+      - traefik.http.middlewares.secheader.headers.sslredirect=true
+      - traefik.http.middlewares.secheader.headers.accesscontrolmaxage=100
+      - traefik.http.middlewares.secheader.headers.addVaryHeader=true
+      - traefik.http.middlewares.secheader.headers.accesscontrolallowmethods=GET,OPTIONS,PUT
+      - traefik.http.middlewares.secheader.headers.stspreload=true
+      - traefik.http.middlewares.secheader.headers.forcestsheader=true
+      - traefik.http.middlewares.secheader.headers.contenttypenosniff=true
+      - traefik.http.middlewares.secheader.headers.browserxssfilter=true
+      # Dashboard
+      - traefik.http.routers.traefik-dashboard.entrypoints=websecure
+      - traefik.http.routers.traefik-dashboard.service=api@internal
+      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAINNAME}`)
+      - traefik.http.routers.traefik-dashboard.tls=true
+      - traefik.http.routers.traefik-dashboard.tls.certresolver=myresolver
+      - traefik.http.routers.traefik-dashboard.middlewares=secheader
+
+networks:
+  traefik:
+    name: traefik
+  docker_sock:
+    name: docker_sock
+

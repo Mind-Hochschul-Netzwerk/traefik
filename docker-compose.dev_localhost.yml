@@ -1,0 +1,37 @@
+version: "3.5"
+services:
+  traefik:
+    command:
+      - --api.dashboard=${ENABLE_DASHBOARD}
+      # Get Docker as the provider
+      - --providers.docker=true
+      - --providers.docker.endpoint=tcp://dockerproxy:2375
+      - --providers.docker.network=docker_sock
+      - --providers.docker.exposedbydefault=false
+      # Settle the ports for the entry points
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      - --entrypoints.websecure.address=:443
+      # Logging
+      - --log.level=INFO
+      - --log.filePath=/var/log/traefik.log
+      - --accesslog=true
+      - --accesslog.filepath=/var/log/accesslog.log
+      - --accesslog.filters.statuscodes=300-302,404,502
+      - --accesslog.filters.retryattempts
+      - --accesslog.filters.minduration=10ms
+
+  whoami:
+    image: containous/whoami
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.entrypoints=websecure
+      - traefik.http.routers.whoami.rule=Host(`whoami.${DOMAINNAME}`)
+      - traefik.http.routers.whoami.tls=true
+      - traefik.http.routers.whoami.tls.certresolver=myresolver
+      - traefik.http.routers.whoami.middlewares=secheader
+      - traefik.http.services.whoami.loadbalancer.server.port=80
+    networks:
+      - traefik

@@ -1,0 +1,33 @@
+version: "3.5"
+services:
+  traefik:
+    security_opt:
+      - no-new-privileges:true
+    command:
+      - --api.dashboard=${ENABLE_DASHBOARD}
+      # Get Docker as the provider
+      - --providers.docker=true
+      - --providers.docker.endpoint=tcp://dockerproxy:2375
+      - --providers.docker.network=docker_sock
+      - --providers.docker.exposedbydefault=false
+      # Settle the ports for the entry points
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      - --entrypoints.websecure.address=:443
+      # Logging
+      - --log.level=INFO
+      - --log.filePath=/var/log/traefik.log
+      - --accesslog=true
+      - --accesslog.filepath=/var/log/accesslog.log
+      - --accesslog.filters.statuscodes=300-302,404,502
+      - --accesslog.filters.retryattempts
+      - --accesslog.filters.minduration=10ms
+      # Letsencrypt
+      - --certificatesresolvers.myresolver.acme.httpchallenge=true
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.myresolver.acme.email=${CERT_EMAIL}
+      - --certificatesresolvers.myresolver.acme.caserver=${CA_SERVER}
+      - --certificatesresolvers.myresolver.acme.storage=/etc/traefik/acme/acme.json
+      - --certificatesresolvers.myresolver.acme.tlsChallenge=true

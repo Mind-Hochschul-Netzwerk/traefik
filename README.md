@@ -1,6 +1,6 @@
 # traefik
 
-traefik (reverse proxy) setup for development
+traefik (reverse proxy) setup
 
 ## start
 
@@ -18,4 +18,4 @@ Go to [https://whoami.docker.localhost](https://whoami.docker.localhost) to see 
 
 ## production setup
 
-the production setup is located `prod`. Make sure not to expose any secrets to the git repository!
+The production setup is located in `docker-compose.prod.yml` and `.env`. Make sure not to expose any secrets to the git repository!
