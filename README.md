@@ -4,6 +4,8 @@ traefik (reverse proxy) setup
 
 ## start
 
+Edit env.sample and save it as .env
+
     $ docker-compose up -d traefik
 
 Open the traefik dashboard at [http://localhost:8080](http://localhost:8080) to see if everything works.
