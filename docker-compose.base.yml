@@ -3,7 +3,7 @@ services:
   dockerproxy:
    container_name: docker_socket_proxy
    image: tecnativa/docker-socket-proxy
-   restart: always
+   restart: unless-stopped
    networks:
      - docker_sock
    ports:
@@ -18,7 +18,7 @@ services:
     hostname: traefik
     image: traefik:2.2
     container_name: traefik
-    restart: always
+    restart: unless-stopped
     volumes:
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
       - ${VOLUMES_DIR}/log:/var/log
