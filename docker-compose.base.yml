@@ -1,22 +1,22 @@
 version: "3.5"
 services:
   dockerproxy:
-   container_name: docker_socket_proxy
-   image: tecnativa/docker-socket-proxy
-   restart: unless-stopped
-   networks:
-     - docker_sock
-   ports:
-     - 2375
-   volumes:
-     - "/var/run/docker.sock:/var/run/docker.sock"
-   environment:
-     - LOG_LEVEL=info
-     - CONTAINERS=1
+    container_name: docker_socket_proxy
+    image: tecnativa/docker-socket-proxy
+    restart: unless-stopped
+    networks:
+      - docker_sock
+    ports:
+      - 2375
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - LOG_LEVEL=info
+      - CONTAINERS=1
 
   traefik:
     hostname: traefik
-    image: traefik:2.2
+    image: traefik:2.3.3
     container_name: traefik
     restart: unless-stopped
     volumes:
@@ -53,4 +53,3 @@ networks:
     name: traefik
   docker_sock:
     name: docker_sock
-
