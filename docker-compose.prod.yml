@@ -4,11 +4,13 @@ services:
     security_opt:
       - no-new-privileges:true
     command:
-      - --api.dashboard=${ENABLE_DASHBOARD}
+      - --api.dashboard=false
+      - --providers.file.watch=true
+      - --providers.file.directory=/etc/traefik/config/
       # Get Docker as the provider
       - --providers.docker=true
       - --providers.docker.endpoint=tcp://dockerproxy:2375
-      - --providers.docker.network=docker_sock
+      - --providers.docker.network=traefik
       - --providers.docker.exposedbydefault=false
       # Settle the ports for the entry points
       - --entrypoints.web.address=:80
