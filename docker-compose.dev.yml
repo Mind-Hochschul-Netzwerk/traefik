@@ -21,6 +21,14 @@ services:
       - --log.level=INFO
       - --accesslog=true
 
+      # Letsencrypt
+      - --certificatesresolvers.myresolver.acme.httpchallenge=true
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.myresolver.acme.email=${CERT_EMAIL}
+      - --certificatesresolvers.myresolver.acme.caserver=${CA_SERVER}
+      - --certificatesresolvers.myresolver.acme.storage=/etc/traefik/acme/acme.json
+      - --certificatesresolvers.myresolver.acme.tlsChallenge=true
+
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik-dashboard.entrypoints=websecure
