@@ -27,7 +27,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
       - ${VOLUMES_DIR}/log:/var/log
-      - ${VOLUMES_DIR}/config:/etc/traefik/config
+      - ./traefik_dynamic_conf.yml:/etc/traefik/config/traefik_dynamic_conf.yml
     ports:
       - "80:80"
       - "443:443"
