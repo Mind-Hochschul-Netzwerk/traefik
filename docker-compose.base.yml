@@ -38,5 +38,8 @@ services:
 networks:
   traefik:
     name: traefik
+    ipam:
+      config:
+        - subnet: ${TRAEFIK_SUBNET}
   docker_sock:
     name: docker_sock
