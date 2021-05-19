@@ -23,7 +23,7 @@ services:
       - --log.filePath=/var/log/traefik.log
       - --accesslog=true
       - --accesslog.filepath=/var/log/accesslog.log
-      - --accesslog.filters.statuscodes=300-302,404,502
+      - --accesslog.filters.statuscodes=401,400-499,502
       - --accesslog.filters.retryattempts
       - --accesslog.filters.minduration=10ms
       # Letsencrypt
