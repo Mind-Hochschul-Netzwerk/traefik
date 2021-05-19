@@ -32,4 +32,3 @@ services:
       - --certificatesresolvers.myresolver.acme.email=${CERT_EMAIL}
       - --certificatesresolvers.myresolver.acme.caserver=${CA_SERVER}
       - --certificatesresolvers.myresolver.acme.storage=/etc/traefik/acme/acme.json
-      - --certificatesresolvers.myresolver.acme.tlsChallenge=true
