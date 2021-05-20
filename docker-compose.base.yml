@@ -11,7 +11,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      - LOG_LEVEL=info
+      - LOG_LEVEL=warning
       - CONTAINERS=1
 
   traefik:
@@ -22,7 +22,7 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - "TZ={{ TIME_ZONE }}"
+      - "TZ"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
