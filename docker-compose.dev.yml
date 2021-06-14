@@ -17,6 +17,7 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --entrypoints.web.http.redirections.entrypoint.permanent=true
       - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
       # Log
       - --log.level=${LOG_LEVEL}
       - --accesslog=true
@@ -24,22 +25,12 @@ services:
       - --accesslog.filters.statuscodes=300-302,404,502
       - --accesslog.filters.retryattempts
       - --accesslog.filters.minduration=10ms
-
-      # Letsencrypt
-      - --certificatesresolvers.myresolver.acme.httpchallenge=true
-      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
-      - --certificatesresolvers.myresolver.acme.email=${CERT_EMAIL}
-      - --certificatesresolvers.myresolver.acme.caserver=${CA_SERVER}
-      - --certificatesresolvers.myresolver.acme.storage=/etc/traefik/acme/acme.json
-
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik-dashboard.entrypoints=websecure
       - traefik.http.routers.traefik-dashboard.service=api@internal
       - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAINNAME}`)
       - traefik.http.routers.traefik-dashboard.middlewares=secheader@file
-      - traefik.http.services.traefik-dashboard.loadbalancer.server.port=8080
-      - traefik.http.services.traefik-dashboard.loadbalancer.server.scheme=http
 
   whoami:
     image: containous/whoami
@@ -49,6 +40,5 @@ services:
       - traefik.http.routers.whoami.entrypoints=websecure
       - traefik.http.routers.whoami.rule=Host(`whoami.${DOMAINNAME}`)
       - traefik.http.routers.whoami.middlewares=secheader@file
-      - traefik.http.services.whoami.loadbalancer.server.port=80
     networks:
       - traefik
