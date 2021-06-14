@@ -15,8 +15,6 @@ http:
         addVaryHeader: true
         accesscontrolallowmethods: "GET,OPTIONS,PUT"
         forcestsheader: true
-        customresponseheaders:
-          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
 
 tls:
   options:
