@@ -11,6 +11,7 @@ services:
       - --providers.docker.endpoint=tcp://dockerproxy:2375
       - --providers.docker.network=traefik
       - --providers.docker.exposedbydefault=false
+      - --providers.docker.defaultRule=Host(`{{ normalize (index .Labels "com.docker.compose.service") }}.${DOMAINNAME}`)
       # Entrypoints
       - --entrypoints.web.address=:80
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
@@ -18,6 +19,7 @@ services:
       - --entrypoints.web.http.redirections.entrypoint.permanent=true
       - --entrypoints.websecure.address=:443
       - --entrypoints.websecure.http.tls=true
+      - --entrypoints.websecure.http.middlewares=secheader@file
       # Log
       - --log.level=${LOG_LEVEL}
       - --accesslog=true
@@ -29,16 +31,13 @@ services:
       - traefik.enable=true
       - traefik.http.routers.traefik-dashboard.entrypoints=websecure
       - traefik.http.routers.traefik-dashboard.service=api@internal
-      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAINNAME}`)
-      - traefik.http.routers.traefik-dashboard.middlewares=secheader@file
 
   whoami:
     image: containous/whoami
     restart: unless-stopped
+    container_name: whoami
     labels:
       - traefik.enable=true
       - traefik.http.routers.whoami.entrypoints=websecure
-      - traefik.http.routers.whoami.rule=Host(`whoami.${DOMAINNAME}`)
-      - traefik.http.routers.whoami.middlewares=secheader@file
     networks:
       - traefik
