@@ -41,7 +41,7 @@ entryPoints:
         domains:
           - main: "*.yourdomain.de"
             sans:
-              - ".yourdomain.de"
+              - "yourdomain.de"
 
 certificatesResolvers:
   cloudflare:
@@ -51,7 +51,7 @@ certificatesResolvers:
       # caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"
       dnsChallenge:
         provider: hetzner
-        delayBeforeCheck: 3
+        delayBeforeCheck: 120
         resolvers:
           - "1.1.1.1:53"
           - "1.0.0.1:53"
