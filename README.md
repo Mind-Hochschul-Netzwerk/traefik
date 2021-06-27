@@ -1,23 +1,29 @@
-# traefik
+# Traefik
 
-traefik (reverse proxy) setup
+Traefik (reverse proxy) for Mind-Hochschul-Netzwerk
 
-## start
+## Dev setup
 
-Edit env.sample and save it as .env
+Remove ".sample" suffix from [.env](./.env) and change to your needs.
 
-    $ docker-compose up -d traefik
+```bash
+make dev
+```
 
-Open the traefik dashboard at [http://localhost:8080](http://localhost:8080) to see if everything works.
+Go to [http://traefik.docker.localhost](http://traefik.docker.localhost) to see if http connection works.
 
-## test service (whoami)
+You will have to repeat this step whenever you restart your container.
 
-    $ docker-compose up -d whoami
+Go to [https://whoami.docker.localhost](https://whoami.docker.localhost) to see if secure connection works. Tell your browser to accept the self-signed certificate.
 
-Go to [http://whoami.docker.localhost](http://whoami.docker.localhost) to see if http connection works.
+## Production setup
 
-Go to [https://whoami.docker.localhost](https://whoami.docker.localhost) to see if secure connection works. Tell your browser to accept the self-signed certificate. You will have to repeat this step whenever you restart your container.
+Remove ".sample" suffix from [.env](./.env) and change to your needs.
 
-## production setup
+Remove the "sample" suffix from [traefik-static.prod.yml.sample](./conf/traefik-static.prod.yml.sample) and check the file.
 
-The production setup is located in `docker-compose.prod.yml` and `.env`. Make sure not to expose any secrets to the git repository!
+```bash
+make prod
+```
+
+Make sure not to expose any secrets to the git repository!
