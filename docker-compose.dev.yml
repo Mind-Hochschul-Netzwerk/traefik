@@ -1,44 +1,24 @@
 version: "3.5"
 services:
   traefik:
-    command:
-      - --api.dashboard=true
-      # File Provider
-      - --providers.file.watch=true
-      - --providers.file.directory=/etc/traefik/config/
-      # Docker Provider
-      - --providers.docker=true
-      - --providers.docker.endpoint=tcp://dockerproxy:2375
-      - --providers.docker.network=traefik
-      - --providers.docker.exposedbydefault=false
-      # Entrypoints
-      - --entrypoints.web.address=:80
-      - --entrypoints.web.http.redirections.entrypoint.to=websecure
-      - --entrypoints.web.http.redirections.entrypoint.scheme=https
-      - --entrypoints.web.http.redirections.entrypoint.permanent=true
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.websecure.http.tls=true
-      # Log
-      - --log.level=${LOG_LEVEL}
-      - --accesslog=true
-      - --accesslog.filepath=/var/log/accesslog.log
-      - --accesslog.filters.statuscodes=300-302,404,502
-      - --accesslog.filters.retryattempts
-      - --accesslog.filters.minduration=10ms
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${VOLUMES_DIR}/acme:/etc/traefik/acme
+      - ${VOLUMES_DIR}/log:/var/log
+      - ./conf/traefik-dyn.yml:/etc/traefik/config/dnamic.yml
+      - ./conf/traefik-static.dev.yml:/etc/traefik/traefik.yml
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik-dashboard.entrypoints=websecure
       - traefik.http.routers.traefik-dashboard.service=api@internal
-      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${DOMAINNAME}`)
-      - traefik.http.routers.traefik-dashboard.middlewares=secheader@file
+      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.docker.localhost`)
 
   whoami:
     image: containous/whoami
     restart: unless-stopped
+    networks:
+      - traefik
     labels:
       - traefik.enable=true
       - traefik.http.routers.whoami.entrypoints=websecure
-      - traefik.http.routers.whoami.rule=Host(`whoami.${DOMAINNAME}`)
-      - traefik.http.routers.whoami.middlewares=secheader@file
-    networks:
-      - traefik
+      - traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)
