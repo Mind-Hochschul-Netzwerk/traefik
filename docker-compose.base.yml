@@ -23,11 +23,6 @@ services:
       - no-new-privileges:true
     environment:
       - "TZ"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${VOLUMES_DIR}/acme:/etc/traefik/acme
-      - ${VOLUMES_DIR}/log:/var/log
-      - ./traefik_dynamic_conf.yml:/etc/traefik/config/traefik_dynamic_conf.yml
     ports:
       - "80:80"
       - "443:443"

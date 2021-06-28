@@ -1,23 +1,32 @@
-# traefik
+# Traefik
 
-traefik (reverse proxy) setup
+Traefik (reverse proxy) for Mind-Hochschul-Netzwerk
 
-## start
+## Dev setup
 
-Edit env.sample and save it as .env
+Copy [.env.sample](./.env.sample) and remove `.sample` suffix. Change to your needs.
 
-    $ docker-compose up -d traefik
+```bash
+make dev
+```
 
-Open the traefik dashboard at [http://localhost:8080](http://localhost:8080) to see if everything works.
+Go to [http://traefik.docker.localhost](http://traefik.docker.localhost) to see if http connection works.
 
-## test service (whoami)
+You will have to repeat this step whenever you restart your container.
 
-    $ docker-compose up -d whoami
+Go to [https://whoami.docker.localhost](https://whoami.docker.localhost) to see if secure connection works. Tell your browser to accept the self-signed certificate.
 
-Go to [http://whoami.docker.localhost](http://whoami.docker.localhost) to see if http connection works.
+## Production setup
 
-Go to [https://whoami.docker.localhost](https://whoami.docker.localhost) to see if secure connection works. Tell your browser to accept the self-signed certificate. You will have to repeat this step whenever you restart your container.
+Copy [.env.sample](./.env.sample) and remove `.sample` suffix. Change to your needs.
 
-## production setup
+Copy [traefik-static.prod.yml.sample](./conf/traefik-static.prod.yml.sample) and remove `.sample` suffix. Change to your needs.
 
-The production setup is located in `docker-compose.prod.yml` and `.env`. Make sure not to expose any secrets to the git repository!
+Create a `dnschallenge.env` with the required environment keys for your DNS challenge provider.
+See: [traefik docs](https://doc.traefik.io/traefik/https/acme/#dnschallenge)
+
+```bash
+make prod
+```
+
+Make sure not to expose any secrets to the git repository!
