@@ -11,5 +11,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
       - ${VOLUMES_DIR}/log:/var/log
-      - ./conf/traefik-dyn.yml:/etc/traefik/config/dnamic.yml
+      - ./conf/traefik-dynamic.yml:/etc/traefik/config/dnamic.yml
       - ./conf/traefik-static.prod.yml:/etc/traefik/traefik.yml
