@@ -37,14 +37,14 @@ entryPoints:
       middlewares:
         - secheader@file
       tls:
-        certresolver: "hetzner"
+        certresolver: "dnschallenger"
         domains:
           - main: "*.yourdomain.de"
             sans:
               - "yourdomain.de"
 
 certificatesResolvers:
-  cloudflare:
+  dnschallenger:
     acme:
       email: admin@yourdomain.de
       storage: /etc/traefik/acme/acme.json
