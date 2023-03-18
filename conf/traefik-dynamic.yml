@@ -10,7 +10,7 @@ http:
         stsPreload: true
         stsSeconds: 31536000
         sslredirect: true
-        contentSecurityPolicy: "frame-ancestors https://*.mind-hochschul-netzwerk.de"
+        contentSecurityPolicy: "frame-ancestors https://*.mind-hochschul-netzwerk.de https://*.localhost"
         accesscontrolmaxage: 100
         addVaryHeader: true
         accesscontrolallowmethods: "GET,OPTIONS,PUT"
