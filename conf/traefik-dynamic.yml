@@ -9,8 +9,8 @@ http:
         stsIncludeSubdomains: true
         stsPreload: true
         stsSeconds: 31536000
-        customFrameOptionsValue: "SAMEORIGIN"
         sslredirect: true
+        contentSecurityPolicy: "frame-ancestors https://*.mind-hochschul-netzwerk.de"
         accesscontrolmaxage: 100
         addVaryHeader: true
         accesscontrolallowmethods: "GET,OPTIONS,PUT"
