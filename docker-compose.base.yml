@@ -2,7 +2,7 @@ version: "3.5"
 services:
   dockerproxy:
     container_name: docker_socket_proxy
-    image: tecnativa/docker-socket-proxy
+    image: tecnativa/docker-socket-proxy:0.1
     restart: unless-stopped
     networks:
       - docker_sock
@@ -16,7 +16,7 @@ services:
 
   traefik:
     hostname: traefik
-    image: traefik:2.4
+    image: traefik:2.6
     container_name: traefik
     restart: unless-stopped
     security_opt:
