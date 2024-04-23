@@ -4,8 +4,6 @@ services:
       - dnschallenge.env
     environment:
       - "TZ"
-    security_opt:
-      - no-new-privileges:true
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
