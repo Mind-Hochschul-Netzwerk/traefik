@@ -34,8 +34,6 @@ entryPoints:
   websecure:
     address: ":443"
     http:
-      middlewares:
-        - secheader@file
       tls:
         certresolver: "dnschallenger"
         domains:
