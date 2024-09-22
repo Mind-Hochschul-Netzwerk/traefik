@@ -25,10 +25,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      - TZ
-      - CF_API_EMAIL
-      - CF_API_KEY
+    env_file:
+      - .env
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
