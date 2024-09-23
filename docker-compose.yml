@@ -15,7 +15,7 @@ services:
 
   traefik:
     hostname: traefik
-    image: traefik:2.11
+    image: traefik:3.1
     container_name: traefik
     restart: unless-stopped
     depends_on:
@@ -25,8 +25,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    env_file:
-      - .env
+    env_file: .env
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
@@ -49,8 +48,6 @@ services:
       - traefik
     labels:
       - traefik.enable=true
-      - traefik.http.routers.whoami.entrypoints=websecure
-      - traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)
 
 networks:
   traefik:

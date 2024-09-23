@@ -10,6 +10,7 @@ accessLog:
     statusCodes:
       - "400-499"
       - "500-599"
+
 api:
   dashboard: false
 
@@ -21,6 +22,7 @@ providers:
     endpoint: "tcp://dockerproxy:2375"
     exposedByDefault: false
     network: traefik
+    defaultRule: "Host(`{{ .ContainerName }}.mind-hochschul-netzwerk.de`)"
 
 entryPoints:
   web:
@@ -33,6 +35,7 @@ entryPoints:
           permanent: true
   websecure:
     address: ":443"
+    asDefault: true
     http:
       tls:
         certresolver: "dnschallenger"
@@ -49,7 +52,7 @@ certificatesResolvers:
       # caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"
       dnsChallenge:
         provider: hetzner
-        delayBeforeCheck: 120
+        delayBeforeCheck: 3
         resolvers:
           - "1.1.1.1:53"
           - "1.0.0.1:53"

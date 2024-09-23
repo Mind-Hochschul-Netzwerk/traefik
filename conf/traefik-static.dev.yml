@@ -20,6 +20,7 @@ providers:
     endpoint: "tcp://dockerproxy:2375"
     exposedByDefault: false
     network: traefik
+    defaultRule: "Host(`{{ .ContainerName }}.docker.localhost`)"
 
 entryPoints:
   web:
@@ -32,5 +33,6 @@ entryPoints:
           permanent: true
   websecure:
     address: ":443"
+    asDefault: true
     http:
       tls: true
