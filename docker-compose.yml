@@ -15,7 +15,7 @@ services:
 
   traefik:
     hostname: traefik
-    image: traefik:3.1
+    image: traefik:3.6
     container_name: traefik
     restart: unless-stopped
     depends_on:
@@ -30,6 +30,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${VOLUMES_DIR}/acme:/etc/traefik/acme
       - ${VOLUMES_DIR}/log:/var/log
+      - ${VOLUMES_DIR}/certs:/certs:ro
       - ./conf/traefik-dynamic.yml:/etc/traefik/config/dynamic.yml
       - ./conf/traefik-static.${TARGET}.yml:/etc/traefik/traefik.yml
     labels:
