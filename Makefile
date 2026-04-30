@@ -7,11 +7,11 @@ $(VOLUMES_DIR)/certs/local.crt:
 
 dev: $(VOLUMES_DIR)/certs/local.crt
 	@echo "Starting DEV Server"
-	TARGET=dev docker compose up -d --force-recreate
+	export TARGET=dev && docker compose up -d --force-recreate
 
 prod:
 	@echo "Starting Production Server"
-	TARGET=prod docker compose up -d --force-recreate --remove-orphans traefik
+	export TARGET=prod && docker compose up -d --force-recreate --remove-orphans traefik
 
 stop:
 	@echo "Stopping Service"

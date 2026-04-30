@@ -1,7 +1,7 @@
 services:
   dockerproxy:
     container_name: docker_socket_proxy
-    image: tecnativa/docker-socket-proxy:0.1
+    image: tecnativa/docker-socket-proxy:latest
     restart: unless-stopped
     networks:
       - docker_sock
@@ -9,9 +9,13 @@ services:
       - 2375
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - haproxy_state:/var/lib/haproxy
     environment:
       - LOG_LEVEL=warning
       - CONTAINERS=1
+      - TIMEOUT_CONNECT=5000
+      - TIMEOUT_CLIENT=50000
+      - TIMEOUT_SERVER=50000
 
   traefik:
     hostname: traefik
@@ -47,6 +51,9 @@ services:
       - traefik
     labels:
       - traefik.enable=true
+
+volumes:
+  haproxy_state:
 
 networks:
   traefik:
