@@ -1,2 +1,4 @@
 *.env
 docker/
+conf/traefik.prod.yml
+conf/traefik.yml

@@ -17,9 +17,6 @@ http:
         forcestsheader: true
 
 tls:
-  certificates:
-    - certFile: /certs/local.crt
-      keyFile: /certs/local.key
   options:
     default:
       minVersion: VersionTLS12

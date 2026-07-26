@@ -1,0 +1,35 @@
+####################################################################
+# traefik.yml is generated in Makefile from traefik.common.yml and #
+# traefik.(dev|prod).yml using envsubst                            #
+####################################################################
+
+log:
+  level: ${TRAEFIK_LOG_LEVEL}
+
+api:
+  dashboard: ${TRAEFIK_API_DASHBOARD}
+
+providers:
+  file:
+    directory: /etc/traefik/config/dynamic
+    watch: true
+  docker:
+    endpoint: "tcp://dockerproxy:2375"
+    exposedByDefault: false
+    network: traefik
+    defaultRule: "Host(`{{ .ContainerName }}.${DOMAINNAME}`)"
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: "websecure"
+          scheme: https
+          permanent: true
+  websecure:
+    address: ":443"
+    asDefault: true
+    http:
+      # continued in traefik.(dev|prod).yml

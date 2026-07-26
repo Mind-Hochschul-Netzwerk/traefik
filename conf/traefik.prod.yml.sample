@@ -1,0 +1,20 @@
+# {continued from traefik.common.yml}
+      tls:
+        certresolver: "dnschallenger"
+        domains:
+          - main: "${DOMAINNAME}"
+            sans:
+              - "*.${DOMAINNAME}"
+
+certificatesResolvers:
+  dnschallenger:
+    acme:
+      email: admin@yourdomain.de
+      storage: /etc/traefik/acme/acme.json
+      # caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      dnsChallenge:
+        provider: hetzner
+        delayBeforeCheck: 3
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
