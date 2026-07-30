@@ -9,13 +9,14 @@ http:
         stsIncludeSubdomains: true
         stsPreload: true
         stsSeconds: 31536000
-        sslredirect: true
+        forceSTSHeader: true
         contentSecurityPolicy: "frame-ancestors https://*.mind-hochschul-netzwerk.de https://*.localhost"
-        accesscontrolmaxage: 100
+        accessControlMaxAge: 100
         addVaryHeader: true
-        accesscontrolallowmethods: "GET,OPTIONS,PUT"
-        forcestsheader: true
-
+        accessControlAllowMethods: GET,OPTIONS,PUT
+        accessControlAllowOriginList:
+          - "https://*.mind-hochschul-netzwerk.de"
+          - "https://*.localhost"
 tls:
   options:
     default:
