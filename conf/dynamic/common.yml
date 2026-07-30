@@ -14,9 +14,9 @@ http:
         accessControlMaxAge: 100
         addVaryHeader: true
         accessControlAllowMethods: GET,OPTIONS,PUT
-        accessControlAllowOriginList:
-          - "https://*.mind-hochschul-netzwerk.de"
-          - "https://*.localhost"
+        accessControlAllowOriginListRegex:
+          - '^https://([a-z0-9-]+\.)*mind-hochschul-netzwerk\.de$'
+          - '^https://([a-z0-9-]+\.)*localhost$'
 tls:
   options:
     default:
