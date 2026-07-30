@@ -3,7 +3,9 @@ include .env
 $(VOLUMES_DIR)/certs/local.crt:
 	mkdir -p $(VOLUMES_DIR)/certs
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-		-keyout $(VOLUMES_DIR)/certs/local.key -out $(VOLUMES_DIR)/certs/local.crt -subj "/CN=*.docker.localhost"
+		-keyout $(VOLUMES_DIR)/certs/local.key -out $(VOLUMES_DIR)/certs/local.crt \
+		-subj "/CN=*.localhost" \
+		-addext "subjectAltName=DNS:*.localhost,DNS:localhost,DNS:*.docker.localhost"
 
 .PHONY: create-traefik-yml
 create-traefik-yml:
