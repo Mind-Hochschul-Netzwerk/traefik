@@ -1,5 +1,19 @@
 http:
   middlewares:
+    # Strips incoming Remote-User/Remote-Groups/Remote-Name/Remote-Email
+    # headers so a client can never inject them directly. Services that use
+    # Authelia's forward-auth pattern (trusting these headers for identity)
+    # must put this middleware before the forwardauth middleware on every
+    # router - including public ones - not just the protected router,
+    # otherwise a request to an unprotected route bypasses forwardAuth
+    # entirely and the spoofed headers reach the backend unfiltered.
+    stripremoteauth:
+      headers:
+        customRequestHeaders:
+          Remote-User: ""
+          Remote-Groups: ""
+          Remote-Name: ""
+          Remote-Email: ""
     secheader:
       headers:
         browserXssFilter: true
@@ -17,6 +31,11 @@ http:
         accessControlAllowOriginListRegex:
           - '^https://([a-z0-9-]+\.)*mind-hochschul-netzwerk\.de$'
           - '^https://([a-z0-9-]+\.)*localhost$'
+    default:
+      chain:
+        middlewares:
+          - stripremoteauth
+          - secheader
 tls:
   options:
     default:
