@@ -7,6 +7,13 @@ http:
     # router - including public ones - not just the protected router,
     # otherwise a request to an unprotected route bypasses forwardAuth
     # entirely and the spoofed headers reach the backend unfiltered.
+    #
+    # Also strips the underscore variants (Remote_User etc.): WSGI/CGI-style
+    # backends (Django included) fold both "-" and "_" into "_" when turning
+    # headers into environ/META keys, so "Remote_User" and "Remote-User" are
+    # indistinguishable to the app even though Traefik treats them as two
+    # completely different header names and would only strip the one it's
+    # told to strip.
     stripremoteauth:
       headers:
         customRequestHeaders:
@@ -14,6 +21,10 @@ http:
           Remote-Groups: ""
           Remote-Name: ""
           Remote-Email: ""
+          Remote_User: ""
+          Remote_Groups: ""
+          Remote_Name: ""
+          Remote_Email: ""
     secheader:
       headers:
         browserXssFilter: true
