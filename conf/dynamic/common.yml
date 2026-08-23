@@ -47,6 +47,12 @@ http:
         middlewares:
           - stripremoteauth
           - secheader
+    forwardauth:
+      chain:
+        middlewares:
+          - stripremoteauth
+          - authelia@docker
+          - secheader
 tls:
   options:
     default:
