@@ -13,13 +13,19 @@ create-traefik-yml:
 	set -a; . ./.env; set +a; \
 	cat conf/traefik.common.yml conf/traefik.$(TARGET).yml | envsubst > conf/traefik.yml
 
+.PHONY: assure-htpasswd
+assure-htpasswd:
+	@echo "Creating .htpasswd file"
+	touch conf/dynamic/.htpasswd
+	htpasswd -b -c conf/dynamic/.htpasswd admin admin
+
 .PHONY: dev
-dev: $(VOLUMES_DIR)/certs/local.crt create-traefik-yml
+dev: $(VOLUMES_DIR)/certs/local.crt create-traefik-yml assure-htpasswd
 	@echo "Starting DEV Server"
 	docker compose up -d --force-recreate
 
 .PHONY: prod
-prod: create-traefik-yml
+prod: create-traefik-yml assure-htpasswd
 	@echo "Starting Production Server"
 	docker compose up -d --force-recreate --remove-orphans traefik
 
