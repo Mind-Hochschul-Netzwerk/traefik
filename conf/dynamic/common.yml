@@ -42,10 +42,19 @@ http:
         accessControlAllowOriginListRegex:
           - '^https://([a-z0-9-]+\.)*mind-hochschul-netzwerk\.de$'
           - '^https://([a-z0-9-]+\.)*localhost$'
+    basicauth-config:
+      basicAuth:
+        usersFile: /etc/traefik/config/dynamic/.htpasswd
     default:
       chain:
         middlewares:
           - stripremoteauth
+          - secheader
+    basicauth:
+      chain:
+        middlewares:
+          - stripremoteauth
+          - basicauth-config
           - secheader
     forwardauth:
       chain:
